@@ -185,11 +185,21 @@
   },
   "active": "0e52c7cbb3f26316",
   "lastOpenFiles": [
+    "sivvap/README.md",
+    "sivvap/vite.config.ts",
+    "sivvap/src/main.ts",
+    "sivvap/eslint.config.ts",
+    "sivvap/vite.config.js",
+    "sivvap/eslint.config.js",
+    "sivvap/src/main.js",
+    "sivvap/src/views/HomeView.vue",
+    "sivvap/src/views/AboutView.vue",
+    "sivvap/src/views",
+    "sivvap/src/router/index.ts",
+    "sivvap/src/assets/logo.svg",
     "Wiki/Cool Note no 1.md",
     "Wiki/Folder/Untagged Note.md",
     "Wiki/Folder/Note of awesome.md",
-    "Wiki/Folder",
-    "README.md",
-    "Wiki"
+    "README.md"
   ]
 }
