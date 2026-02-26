@@ -1,24 +1,20 @@
 {
   "main": {
-    "id": "9e36be6dcbfb7bfe",
+    "id": "30f04e36de7c5755",
     "type": "split",
     "children": [
       {
-        "id": "772830ba164dfc6d",
+        "id": "d92c092db1459e63",
         "type": "tabs",
         "children": [
           {
-            "id": "4359934a9073aa97",
+            "id": "db11ee0205d18975",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Vault/Wiki/Folder/Note of awesome.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "Note of awesome"
+              "title": "New tab"
             }
           }
         ]
@@ -27,15 +23,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "bc257a83a6659c3d",
+    "id": "3b14e34a5b16f951",
     "type": "split",
     "children": [
       {
-        "id": "d0e4ed9a23719770",
+        "id": "5982c4157bc1a2bc",
         "type": "tabs",
         "children": [
           {
-            "id": "82a9b3ded0cbe767",
+            "id": "0be77db21dd3ea78",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -48,7 +44,7 @@
             }
           },
           {
-            "id": "4e55f0892d197938",
+            "id": "71673205e99ef29d",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -65,7 +61,7 @@
             }
           },
           {
-            "id": "8b5aa4782aff45ba",
+            "id": "5af99be818539963",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -81,20 +77,19 @@
     "width": 300
   },
   "right": {
-    "id": "35545f98e2e875c6",
+    "id": "4702ee46a8b45d63",
     "type": "split",
     "children": [
       {
-        "id": "3e8d58dfd3981381",
+        "id": "c03da64884bff2fd",
         "type": "tabs",
         "children": [
           {
-            "id": "b662995677a86cd2",
+            "id": "22816f13a3873069",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Vault/Wiki/Folder/Note of awesome.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,25 +99,24 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Note of awesome"
+              "title": "Backlinks"
             }
           },
           {
-            "id": "ecff424ae8a15e40",
+            "id": "1a2463070e25c16a",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Vault/Wiki/Folder/Note of awesome.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Note of awesome"
+              "title": "Outgoing links"
             }
           },
           {
-            "id": "ca330318554911a6",
+            "id": "0f49ab0b99cb768f",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -137,7 +131,7 @@
             }
           },
           {
-            "id": "756069fd3689319a",
+            "id": "227bad88e6034d06",
             "type": "leaf",
             "state": {
               "type": "all-properties",
@@ -151,18 +145,17 @@
             }
           },
           {
-            "id": "9a86ed48cef963e6",
+            "id": "a1641e0cb080c95a",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "Vault/Wiki/Folder/Note of awesome.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Note of awesome"
+              "title": "Outline"
             }
           }
         ]
@@ -183,12 +176,6 @@
       "bases:Create new base": false
     }
   },
-  "active": "4359934a9073aa97",
-  "lastOpenFiles": [
-    "Vault/Wiki/Folder/Untagged note.md",
-    "Vault/Wiki/Cool note no 1.md",
-    "Vault/Wiki/Folder/Note of awesome.md",
-    "Vault/Wiki/Folder",
-    "Vault/Wiki"
-  ]
+  "active": "db11ee0205d18975",
+  "lastOpenFiles": []
 }
