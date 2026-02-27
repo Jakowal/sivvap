@@ -1,37 +1,30 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
-import type { TreeNode, AliasMap } from './types'
+import { ref, watch } from 'vue'
+import { processVaultFiles } from './utils/vault'
+import { searchFiles } from './utils/search'
 import SidebarTree from './components/SidebarTree.vue'
 import SearchResults from './components/SearchResults.vue'
 
-const tree = ref<TreeNode[]>([])
-const aliasMap = ref<AliasMap>({})
-const initError = ref('')
+// Bundle all vault markdown files as raw strings at build time
+const rawFiles = import.meta.glob('/Vault/**/*.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>
+
+const { tree, aliasMap, files } = processVaultFiles(rawFiles)
 
 const searchQuery = ref('')
 const searchResults = ref<{ path: string; title: string; excerpt: string }[]>([])
 let searchTimer: ReturnType<typeof setTimeout> | null = null
 
+// Debounce search so it doesn't run on every keystroke
 watch(searchQuery, (q) => {
   if (searchTimer) clearTimeout(searchTimer)
   if (!q.trim()) { searchResults.value = []; return }
-  searchTimer = setTimeout(async () => {
-    const res = await fetch('/api/vault-search?q=' + encodeURIComponent(q))
-    searchResults.value = await res.json()
+  searchTimer = setTimeout(() => {
+    searchResults.value = searchFiles(files, q)
   }, 200)
-})
-
-onMounted(async () => {
-  try {
-    const [treeRes, aliasRes] = await Promise.all([
-      fetch('/api/vault-tree'),
-      fetch('/api/vault-aliases'),
-    ])
-    tree.value = (await treeRes.json()) as TreeNode[]
-    aliasMap.value = (await aliasRes.json()) as AliasMap
-  } catch (err) {
-    initError.value = `Failed to initialize: ${String(err)}`
-  }
 })
 </script>
 
@@ -57,9 +50,8 @@ onMounted(async () => {
   </nav>
   <main id="content">
     <div id="content-inner">
-      <p v-if="initError" class="error">{{ initError }}</p>
-      <RouterView v-else v-slot="{ Component }">
-        <component :is="Component" :alias-map="aliasMap" @tag-search="searchQuery = $event" />
+      <RouterView v-slot="{ Component }">
+        <component :is="Component" :alias-map="aliasMap" :files="files" @tag-search="searchQuery = $event" />
       </RouterView>
     </div>
   </main>

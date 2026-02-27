@@ -2,11 +2,12 @@
 import { ref, watch } from 'vue'
 import { marked } from 'marked'
 import type { VaultFile, AliasMap } from '../types'
-import { preprocessWikiLinks } from '../wikilinks'
+import { preprocessWikiLinks } from '../utils/wikilinks'
 
 const props = defineProps<{
   path: string
   aliasMap: AliasMap
+  files: Record<string, VaultFile>
 }>()
 
 const emit = defineEmits<{ 'tag-search': [query: string] }>()
@@ -20,16 +21,13 @@ async function loadNote(path: string) {
   note.value = null
   html.value = ''
 
-  try {
-    const res = await fetch('/api/vault-file?path=' + encodeURIComponent(path))
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    const data = (await res.json()) as VaultFile
-    note.value = data
-    html.value = await marked.parse(preprocessWikiLinks(data.body, props.aliasMap))
-    document.title = path.split('/').pop()?.replace(/\.md$/, '') ?? 'Wiki'
-  } catch (err) {
-    error.value = `Failed to load note: ${String(err)}`
-  }
+  const data = props.files[path]
+  if (!data) { error.value = 'Note not found'; return }
+
+  note.value = data
+  // Rewrite [[wikilinks]] before passing to the markdown parser
+  html.value = await marked.parse(preprocessWikiLinks(data.body, props.aliasMap))
+  document.title = path.split('/').pop()?.replace(/\.md$/, '') ?? 'Wiki'
 }
 
 watch(
