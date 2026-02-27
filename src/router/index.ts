@@ -1,8 +1,14 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import NoteView from '../components/NoteView.vue'
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [],
+export default createRouter({
+  history: createWebHashHistory(),
+  routes: [
+    {
+      path: '/:pathMatch(.*)*',
+      component: NoteView,
+      props: (route) =>
+        ({ path: ([] as string[]).concat(route.params.pathMatch as string | string[]).filter(Boolean).join('/') }),
+    },
+  ],
 })
-
-export default router

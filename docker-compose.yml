@@ -1,0 +1,8 @@
+services:
+  wiki:
+    build: .
+    ports:
+      - "4173:4173"
+    volumes:
+      - ./Vault:/app/Vault:ro
+    restart: unless-stopped
