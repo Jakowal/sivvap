@@ -28,6 +28,7 @@ export function processVaultFiles(rawFiles: Record<string, string>): {
     if (relPath.split('/').some((p) => p.startsWith('.'))) continue
 
     const { meta, body } = parseFrontmatter(raw)
+    if (!meta.publish) continue
     files[relPath] = { path: relPath, meta, body }
     urlMap[toUrlPath(relPath)] = relPath
 

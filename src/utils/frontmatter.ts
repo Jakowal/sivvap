@@ -14,9 +14,14 @@ function extractList(block: string, key: string): string[] {
 export function parseFrontmatter(raw: string): { meta: NoteMeta; body: string } {
   // Match the --- ... --- block at the start of the file
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/)
-  if (!match) return { meta: { tags: [], aliases: [] }, body: raw }
+  if (!match) return { meta: { publish: false, tags: [], aliases: [] }, body: raw }
+  const block = match[1]
   return {
-    meta: { tags: extractList(match[1], 'tags'), aliases: extractList(match[1], 'aliases') },
+    meta: {
+      publish: /^publish:\s*true\s*$/m.test(block),
+      tags: extractList(block, 'tags'),
+      aliases: extractList(block, 'aliases'),
+    },
     body: match[2],
   }
 }

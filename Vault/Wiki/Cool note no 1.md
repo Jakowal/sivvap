@@ -3,6 +3,7 @@ tags:
   - ignore-tag
   - important-tag
   - tag
+publish: true
 aliases:
   - Other Name
 ---

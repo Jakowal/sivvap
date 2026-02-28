@@ -6,6 +6,7 @@ export interface TreeNode {
 }
 
 export interface NoteMeta {
+  publish: boolean
   tags: string[]
   aliases: string[]
 }

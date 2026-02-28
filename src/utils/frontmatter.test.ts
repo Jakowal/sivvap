@@ -4,8 +4,26 @@ import { parseFrontmatter } from './frontmatter'
 describe('parseFrontmatter', () => {
   it('returns empty meta and the full string as body when there is no frontmatter', () => {
     const result = parseFrontmatter('just some content')
-    expect(result.meta).toEqual({ tags: [], aliases: [] })
+    expect(result.meta).toEqual({ publish: false, tags: [], aliases: [] })
     expect(result.body).toBe('just some content')
+  })
+
+  it('sets publish to true when frontmatter contains publish: true', () => {
+    const raw = '---\npublish: true\n---\nbody'
+    const { meta } = parseFrontmatter(raw)
+    expect(meta.publish).toBe(true)
+  })
+
+  it('sets publish to false when frontmatter omits publish', () => {
+    const raw = '---\ntags:\n  - foo\n---\nbody'
+    const { meta } = parseFrontmatter(raw)
+    expect(meta.publish).toBe(false)
+  })
+
+  it('sets publish to false when frontmatter has publish: false', () => {
+    const raw = '---\npublish: false\n---\nbody'
+    const { meta } = parseFrontmatter(raw)
+    expect(meta.publish).toBe(false)
   })
 
   it('extracts tags', () => {
