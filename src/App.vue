@@ -12,7 +12,7 @@ const rawFiles = import.meta.glob('/Vault/**/*.md', {
   eager: true,
 }) as Record<string, string>
 
-const { tree, aliasMap, files } = processVaultFiles(rawFiles)
+const { tree, aliasMap, files, urlMap } = processVaultFiles(rawFiles)
 
 const searchQuery = ref('')
 const searchResults = ref<{ path: string; title: string; excerpt: string }[]>([])
@@ -51,8 +51,47 @@ watch(searchQuery, (q) => {
   <main id="content">
     <div id="content-inner">
       <RouterView v-slot="{ Component }">
-        <component :is="Component" :alias-map="aliasMap" :files="files" @tag-search="searchQuery = $event" />
+        <component :is="Component" :alias-map="aliasMap" :files="files" :url-map="urlMap" @tag-search="searchQuery = $event" />
       </RouterView>
     </div>
   </main>
 </template>
+
+<style scoped>
+nav#sidebar {
+  width: 260px;
+  min-width: 160px;
+  overflow-y: auto;
+  border-right: 1px solid #e5e7eb;
+  padding: 1rem 0.5rem;
+  flex-shrink: 0;
+  background: #f9fafb;
+}
+#sidebar-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #9ca3af;
+  padding: 0 0.5rem 0.75rem;
+}
+#search-box { padding: 0 0.5rem 0.6rem; }
+#search-input {
+  width: 100%;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.85rem;
+  background: #fff;
+  color: #1a1a1a;
+  outline: none;
+}
+#search-input:focus { border-color: #2563eb; box-shadow: 0 0 0 2px #dbeafe; }
+
+main#content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2.5rem 3rem;
+}
+#content-inner { max-width: 760px; }
+</style>

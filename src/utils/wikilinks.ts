@@ -1,4 +1,5 @@
 import type { AliasMap } from '../types'
+import { toUrlPath } from './urlpath'
 
 // Matches [[target]] and [[target|display]] syntax
 const WIKILINK_RE = /\[\[([^\]|]+?)(?:\|([^\]]+?))?\]\]/g
@@ -11,10 +12,6 @@ function escapeHtml(s: string): string {
     .replace(/"/g, '&quot;')
 }
 
-function encodeFilePath(path: string): string {
-  return path.split('/').map(encodeURIComponent).join('/')
-}
-
 export function preprocessWikiLinks(markdown: string, aliasMap: AliasMap): string {
   return markdown.replace(WIKILINK_RE, (_match, target: string, display: string | undefined) => {
     const displayText = (display ?? target).trim()
@@ -25,6 +22,6 @@ export function preprocessWikiLinks(markdown: string, aliasMap: AliasMap): strin
       // Render unresolved links as an inert span so broken links are visible
       return `<span class="wiki-link broken" title="Note not found: ${escapeHtml(t)}">${escapeHtml(displayText)}</span>`
     }
-    return `<a class="wiki-link" href="#/${encodeFilePath(resolved)}">${escapeHtml(displayText)}</a>`
+    return `<a class="wiki-link" href="#/${toUrlPath(resolved)}">${escapeHtml(displayText)}</a>`
   })
 }

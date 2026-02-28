@@ -27,6 +27,31 @@ describe('searchFiles', () => {
     expect(results[0].excerpt).toContain('<mark>hello</mark>')
   })
 
+  it('matches each word independently for a multi-word query', () => {
+    // 'cat' and 'mat' are not adjacent, so a phrase search would miss this
+    const files = { 'note.md': makeFile('note.md', 'the cat sat on the mat') }
+    const results = searchFiles(files, 'cat mat')
+    expect(results).toHaveLength(1)
+  })
+
+  it('highlights all matched terms in the excerpt', () => {
+    const files = { 'note.md': makeFile('note.md', 'the cat sat on the mat') }
+    const results = searchFiles(files, 'cat mat')
+    expect(results[0].excerpt).toContain('<mark>cat</mark>')
+    expect(results[0].excerpt).toContain('<mark>mat</mark>')
+  })
+
+  it('excerpt shows context before and after the match', () => {
+    // 'word '.repeat(20) = 100 chars before; ' word'.repeat(30) = 150 chars after
+    // anchor=100, start=40, end=min(256,220)=220 < 256 → both ellipses fire
+    const body = 'word '.repeat(20) + 'TARGET' + ' word'.repeat(30)
+    const files = { 'note.md': makeFile('note.md', body) }
+    const results = searchFiles(files, 'target')
+    expect(results[0].excerpt).toMatch(/^…/)           // truncated at start
+    expect(results[0].excerpt).toContain('<mark>TARGET</mark>')
+    expect(results[0].excerpt).toMatch(/…$/)           // truncated at end
+  })
+
   it('filters by tag using the "tag:" prefix', () => {
     const files = {
       'a.md': makeFile('a.md', 'body', ['typescript']),

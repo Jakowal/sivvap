@@ -1,14 +1,16 @@
 import type { VaultFile, AliasMap, TreeNode } from '../types'
 import { parseFrontmatter } from './frontmatter'
 import { buildTreeFromPaths } from './tree'
+import { toUrlPath } from './urlpath'
 
 export function processVaultFiles(rawFiles: Record<string, string>): {
   tree: TreeNode[]
   aliasMap: AliasMap
   files: Record<string, VaultFile>
+  urlMap: Record<string, string>
 } {
   const keys = Object.keys(rawFiles)
-  if (keys.length === 0) return { tree: [], aliasMap: {}, files: {} }
+  if (keys.length === 0) return { tree: [], aliasMap: {}, files: {}, urlMap: {} }
 
   // Keys are absolute paths like /Vault/<vault-name>/...; derive the shared prefix
   // by taking the first 3 path components so all files under it are included
@@ -17,6 +19,7 @@ export function processVaultFiles(rawFiles: Record<string, string>): {
 
   const files: Record<string, VaultFile> = {}
   const aliasMap: AliasMap = {}
+  const urlMap: Record<string, string> = {}
 
   for (const [absPath, raw] of Object.entries(rawFiles)) {
     if (!absPath.startsWith(vaultPrefix)) continue
@@ -26,6 +29,7 @@ export function processVaultFiles(rawFiles: Record<string, string>): {
 
     const { meta, body } = parseFrontmatter(raw)
     files[relPath] = { path: relPath, meta, body }
+    urlMap[toUrlPath(relPath)] = relPath
 
     // Register the filename stem and any declared aliases for wikilink resolution,
     // storing both original and lowercase forms for case-insensitive lookup
@@ -38,5 +42,5 @@ export function processVaultFiles(rawFiles: Record<string, string>): {
     }
   }
 
-  return { tree: buildTreeFromPaths(Object.keys(files)), aliasMap, files }
+  return { tree: buildTreeFromPaths(Object.keys(files)), aliasMap, files, urlMap }
 }

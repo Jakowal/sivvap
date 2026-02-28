@@ -3,7 +3,7 @@ import { processVaultFiles } from './vault'
 
 describe('processVaultFiles', () => {
   it('returns empty result for empty input', () => {
-    expect(processVaultFiles({})).toEqual({ tree: [], aliasMap: {}, files: {} })
+    expect(processVaultFiles({})).toEqual({ tree: [], aliasMap: {}, files: {}, urlMap: {} })
   })
 
   it('strips the vault prefix so keys are relative paths', () => {

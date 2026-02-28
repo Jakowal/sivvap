@@ -9,7 +9,7 @@ describe('preprocessWikiLinks', () => {
   it('resolves a known link to an anchor tag', () => {
     const result = preprocessWikiLinks('[[My Note]]', { 'My Note': 'My Note.md' })
     expect(result).toContain('<a class="wiki-link"')
-    expect(result).toContain('My%20Note.md') // path segments are URL-encoded
+    expect(result).toContain('href="#/My-Note"') // .md stripped, spaces become dashes
     expect(result).toContain('>My Note</a>')
   })
 
