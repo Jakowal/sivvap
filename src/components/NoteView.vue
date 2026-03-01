@@ -129,7 +129,6 @@ div#note-view {
 .md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
 	margin: 1.5rem 0 0.5rem;
 	color: #efedef;
-	line-height: 1.3;
 	font-family: inherit;
 }
 .md h1 { 
@@ -145,14 +144,12 @@ div#note-view {
 }
 .md p  { 
 	margin: 0.8rem 0; 
-	line-height: 1.75; 
 }
 .md ul, .md ol { 
 	margin: 0.5rem 0 0.5rem 1.5rem; 
 }
 .md li { 
 	margin: 0.25rem 0; 
-	line-height: 1.65; 
 }
 .md code {
 	background: #f3f4f6;
@@ -215,7 +212,7 @@ a.wiki-link:hover {
 }
 span.wiki-link.broken { 
 	color: #dc2626; 
-text-decoration: underline dotted; 
-cursor: default; 
+	text-decoration: underline dotted; 
+	cursor: default; 
 }
 </style>
