@@ -5,6 +5,7 @@ import type { VaultFile } from '../types'
 import { toUrlPath } from '../utils/urlpath'
 
 defineProps<{ files: VaultFile[] }>()
+const emit = defineEmits<{ select: [] }>()
 
 const route = useRoute()
 const currentPath = computed(() =>
@@ -29,6 +30,7 @@ function noteName(path: string): string {
       class="recent-item"
       :class="{ active: currentPath === toUrlPath(file.path) }"
       :to="'/' + toUrlPath(file.path)"
+      @click="emit('select')"
     >
       <span class="recent-name">{{ noteName(file.path) }}</span>
       <span class="recent-date">{{ formatDate(file.lastUpdated!) }}</span>

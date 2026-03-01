@@ -5,6 +5,7 @@ import type { TreeNode } from '../types'
 import { toUrlPath } from '../utils/urlpath'
 
 defineProps<{ nodes: TreeNode[] }>()
+const emit = defineEmits<{ select: [] }>()
 
 const route = useRoute()
 const currentPath = computed(() =>
@@ -17,7 +18,7 @@ const currentPath = computed(() =>
     <details v-if="node.type === 'dir'" class="tree-dir" open>
       <summary>{{ node.name }}</summary>
       <div class="tree-children">
-        <SidebarTree :nodes="node.children ?? []" />
+        <SidebarTree :nodes="node.children ?? []" @select="emit('select')" />
       </div>
     </details>
     <RouterLink
@@ -25,6 +26,7 @@ const currentPath = computed(() =>
       class="tree-file"
       :class="{ active: currentPath === toUrlPath(node.path) }"
       :to="'/' + toUrlPath(node.path)"
+      @click="emit('select')"
     >{{ node.name.replace(/\.md$/, '') }}</RouterLink>
   </template>
 </template>

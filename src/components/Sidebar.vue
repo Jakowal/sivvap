@@ -58,11 +58,14 @@ watch(searchQuery, (q) => {
             <SearchResults
                 v-if="searchQuery.trim()"
                 :results="searchResults"
-                @select="searchQuery = ''"
+                @select="() => {
+                    searchQuery = ''
+                    sidebarExpanded = false
+                }"
             />
             <template v-else>
-                <SidebarTree :nodes="tree" />
-                <RecentFiles :files="recentFiles" />
+                <SidebarTree :nodes="tree" @select="sidebarExpanded = false"  />
+                <RecentFiles :files="recentFiles" @select="sidebarExpanded = false" />
             </template>
         </nav>
     </header>
