@@ -2,8 +2,11 @@
 import { ref, watch } from 'vue'
 import { processVaultFiles } from './utils/vault'
 import { searchFiles } from './utils/search'
+import type { VaultFile } from './types'
+import vaultDates from 'virtual:vault-dates'
 import SidebarTree from './components/SidebarTree.vue'
 import SearchResults from './components/SearchResults.vue'
+import RecentFiles from './components/RecentFiles.vue'
 
 // Bundle all vault markdown files as raw strings at build time
 const rawFiles = import.meta.glob('/Vault/**/*.md', {
@@ -12,7 +15,12 @@ const rawFiles = import.meta.glob('/Vault/**/*.md', {
   eager: true,
 }) as Record<string, string>
 
-const { tree, aliasMap, files, urlMap } = processVaultFiles(rawFiles)
+const { tree, aliasMap, files, urlMap } = processVaultFiles(rawFiles, vaultDates)
+
+const recentFiles = Object.values(files)
+  .filter((f): f is VaultFile & { lastUpdated: string } => f.lastUpdated !== null)
+  .sort((a, b) => b.lastUpdated.localeCompare(a.lastUpdated))
+  .slice(0, 10)
 
 const searchQuery = ref('')
 const searchResults = ref<{ path: string; title: string; excerpt: string }[]>([])
@@ -46,7 +54,10 @@ watch(searchQuery, (q) => {
       :results="searchResults"
       @select="searchQuery = ''"
     />
-    <SidebarTree v-else :nodes="tree" />
+    <template v-else>
+      <SidebarTree :nodes="tree" />
+      <RecentFiles :files="recentFiles" />
+    </template>
   </nav>
   <main id="content">
     <div id="content-inner">

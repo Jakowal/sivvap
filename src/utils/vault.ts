@@ -3,7 +3,10 @@ import { parseFrontmatter } from './frontmatter'
 import { buildTreeFromPaths } from './tree'
 import { toUrlPath } from './urlpath'
 
-export function processVaultFiles(rawFiles: Record<string, string>): {
+export function processVaultFiles(
+  rawFiles: Record<string, string>,
+  dates?: Record<string, string | null>,
+): {
   tree: TreeNode[]
   aliasMap: AliasMap
   files: Record<string, VaultFile>
@@ -29,7 +32,7 @@ export function processVaultFiles(rawFiles: Record<string, string>): {
 
     const { meta, body } = parseFrontmatter(raw)
     if (!meta.publish) continue
-    files[relPath] = { path: relPath, meta, body }
+    files[relPath] = { path: relPath, meta, body, lastUpdated: dates?.[absPath] ?? null }
     urlMap[toUrlPath(relPath)] = relPath
 
     // Register the filename stem and any declared aliases for wikilink resolution,

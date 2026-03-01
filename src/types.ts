@@ -15,6 +15,7 @@ export interface VaultFile {
   path: string
   meta: NoteMeta
   body: string
+  lastUpdated: string | null
 }
 
 export type AliasMap = Record<string, string>

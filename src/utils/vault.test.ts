@@ -53,4 +53,17 @@ describe('processVaultFiles', () => {
     expect(tree[0].type).toBe('dir')
     expect(tree[0].name).toBe('folder')
   })
+
+  it('includes lastUpdated from the dates map', () => {
+    const raw = { '/Vault/Wiki/note.md': '---\npublish: true\n---\nbody' }
+    const dates = { '/Vault/Wiki/note.md': '2026-02-28T20:32:04+01:00' }
+    const { files } = processVaultFiles(raw, dates)
+    expect(files['note.md'].lastUpdated).toBe('2026-02-28T20:32:04+01:00')
+  })
+
+  it('sets lastUpdated to null when no date is available', () => {
+    const raw = { '/Vault/Wiki/note.md': '---\npublish: true\n---\nbody' }
+    const { files } = processVaultFiles(raw)
+    expect(files['note.md'].lastUpdated).toBeNull()
+  })
 })

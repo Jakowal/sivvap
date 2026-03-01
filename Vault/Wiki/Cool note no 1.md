@@ -33,5 +33,6 @@ This text has an *italic* inside as well as a **bold** one.
 [[Note of awesome]]
 
 [[Cool Note no 1|Other Name]]
+[[Untagged note]]
 
 [[Nonexistent File]]
