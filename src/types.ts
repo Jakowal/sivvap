@@ -9,6 +9,7 @@ export interface NoteMeta {
   publish: boolean
   tags: string[]
   aliases: string[]
+  title: string | null
 }
 
 export interface VaultFile {

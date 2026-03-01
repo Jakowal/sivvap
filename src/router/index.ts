@@ -7,8 +7,12 @@ export default createRouter({
     {
       path: '/:pathMatch(.*)*',
       component: NoteView,
-      props: (route) =>
-        ({ path: ([] as string[]).concat(route.params.pathMatch as string | string[]).filter(Boolean).join('/') }),
+      props: (route) => ({
+        path: ([] as string[])
+          .concat(route.params.pathMatch as string | string[])
+          .filter(Boolean)
+          .join('/'),
+      }),
     },
   ],
 })

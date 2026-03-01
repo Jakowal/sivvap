@@ -58,7 +58,7 @@ export function searchFiles(
 
   for (const [relPath, file] of Object.entries(files)) {
     if (results.length >= 20) break
-    const title = relPath.split('/').at(-1)!.replace(/\.md$/, '')
+    const title = file.meta.title ?? relPath.split('/').at(-1)!.replace(/\.md$/, '')
 
     if (tagFilter !== null) {
       if (file.meta.tags.some((t) => t.toLowerCase().includes(tagFilter)))

@@ -4,7 +4,7 @@ import { parseFrontmatter } from './frontmatter'
 describe('parseFrontmatter', () => {
   it('returns empty meta and the full string as body when there is no frontmatter', () => {
     const result = parseFrontmatter('just some content')
-    expect(result.meta).toEqual({ publish: false, tags: [], aliases: [] })
+    expect(result.meta).toEqual({ publish: false, tags: [], aliases: [], title: null })
     expect(result.body).toBe('just some content')
   })
 

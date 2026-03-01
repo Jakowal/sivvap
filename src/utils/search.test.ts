@@ -3,7 +3,7 @@ import { searchFiles } from './search'
 import type { VaultFile } from '../types'
 
 function makeFile(path: string, body: string, tags: string[] = []): VaultFile {
-  return { path, body, meta: { tags, aliases: [] } }
+  return { path, body, meta: { tags, aliases: [], publish: true, title: null }, lastUpdated: null }
 }
 
 describe('searchFiles', () => {

@@ -15,6 +15,7 @@ const props = defineProps<{
 const emit = defineEmits<{ 'tag-search': [query: string] }>()
 
 const note = ref<VaultFile | null>(null)
+const noteTitle = ref('')
 const html = ref('')
 const error = ref('')
 
@@ -31,20 +32,21 @@ async function loadNote(path: string) {
 	const body = stripComments(data.body)
 	// Rewrite [[wikilinks]] before passing to the markdown parser
 	html.value = await marked.parse(preprocessWikiLinks(body, props.aliasMap))
-	document.title = filePath.split('/').pop()?.replace(/\.md$/, '') ?? 'Wiki'
+	noteTitle.value = data.meta.title || filePath.split('/').pop()?.replace(/\.md$/, '') || 'Wiki'
+	document.title = noteTitle.value
 }
 
 watch(
 	() => props.path,
 	(path) => {
-		if (path) loadNote(path)
-		else { note.value = null; error.value = '' }
+		loadNote(path || 'index')
 	},
 	{ immediate: true },
 )
 </script>
 <template>
 	<div v-if="note" id="note-view">
+		<h1 class="note-title">{{ noteTitle }}</h1>
 		<div v-if="note.meta.tags.length || note.meta.aliases.length" class="frontmatter">
 			<div v-if="note.meta.tags.length" class="fm-row">
 				<span class="fm-label">Tags</span>
