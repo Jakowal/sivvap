@@ -36,7 +36,7 @@ function noteName(path: string): string {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="css">
 .recent-files {
   margin-top: 1rem;
   padding-top: 0.75rem;

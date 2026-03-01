@@ -29,7 +29,7 @@ const currentPath = computed(() =>
   </template>
 </template>
 
-<style scoped>
+<style scoped lang="css">
 details.tree-dir > summary {
   cursor: pointer;
   list-style: none;

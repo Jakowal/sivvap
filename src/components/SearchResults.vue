@@ -28,7 +28,7 @@ const currentPath = computed(() =>
   </RouterLink>
 </template>
 
-<style scoped>
+<style scoped lang="css">
 .search-result {
   display: block;
   padding: 0.4rem 0.5rem;
