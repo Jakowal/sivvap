@@ -39,55 +39,95 @@ watch(searchQuery, (q) => {
 })
 </script>
 <template>
+    <nav id="sidebar" :class="{expanded: sidebarExpanded}">
+        <SearchResults
+            v-if="searchQuery.trim()"
+            :results="searchResults"
+            @select="() => {
+                searchQuery = ''
+                sidebarExpanded = false
+            }"
+        />
+        <template v-else>
+            <SidebarTree :nodes="tree" @select="sidebarExpanded = false"  />
+            <RecentFiles :files="recentFiles" @select="sidebarExpanded = false" />
+        </template>
+        <div id="search-box">
+            <input
+                v-model="searchQuery"
+                id="search-input"
+                type="search"
+                placeholder="Search…"
+                autocomplete="off"
+                spellcheck="false"
+            />
+        </div>
+    </nav>
     <header>
-        <button id="navbar-button" @click="sidebarExpanded = !sidebarExpanded"><Bars3Icon/></button>
+        <button id="navbar-button-left" class="navbar-button" @click="sidebarExpanded = !sidebarExpanded"><Bars3Icon/></button>
         <a href="/">
             <h1 id="app-title">Tessam Wiki</h1>
         </a>
-        <nav id="sidebar" :class="{expanded: sidebarExpanded}">
-            <div id="search-box">
-                <input
-                    v-model="searchQuery"
-                    id="search-input"
-                    type="search"
-                    placeholder="Search…"
-                    autocomplete="off"
-                    spellcheck="false"
-                />
-            </div>
-            <SearchResults
-                v-if="searchQuery.trim()"
-                :results="searchResults"
-                @select="() => {
-                    searchQuery = ''
-                    sidebarExpanded = false
-                }"
-            />
-            <template v-else>
-                <SidebarTree :nodes="tree" @select="sidebarExpanded = false"  />
-                <RecentFiles :files="recentFiles" @select="sidebarExpanded = false" />
-            </template>
-        </nav>
+        <button id="navbar-button-right" class="navbar-button" @click="sidebarExpanded = !sidebarExpanded"><Bars3Icon/></button>
     </header>
 </template>
 <style lang="css" scoped>
+@media screen and (min-width: 600px) {
+    nav#sidebar {
+        left: -100%;
+        top: 0;
+        padding: 40px 0.5rem 1rem 0.5rem;
+
+        transition: left 100ms linear;
+
+        &.expanded {
+            left: 0;
+        }
+    }
+}
+@media screen and (max-width: 600px) {
+    nav#sidebar {
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        padding-bottom: 2rem;
+
+        bottom: -100vh;
+        left: 0;
+        
+        transition: bottom 200ms linear;
+
+        &.expanded {
+            bottom: 0;
+        }
+    }
+}
 header {
-    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 33px;
+    width: 100vw;
     display: flex;
     justify-content: center;
 
-    button#navbar-button {
+    button.navbar-button {
         all: unset;
         z-index: 5;
-        left: 0;
         top: 0;
         cursor: pointer;
         color: white;
-        position: absolute;   
+        position: absolute;
         svg {
-        height: 33px;
-        width: 33px;
+            height: 33px;
+            width: 33px;
         }
+    }
+    button#navbar-button-left {
+        left: 0;
+    }
+    button#navbar-button-right {
+        right: 0;
     }
     a {
         z-index: 5;
@@ -103,26 +143,11 @@ header {
 nav#sidebar {
     z-index: 4;
     position: absolute;
-    left: -100%;
-    top: 0;
     width: 100%;
     height: 100%;
     opacity: 80%;
     overflow-y: auto;
-    padding: 40px 0.5rem 1rem 0.5rem;
     background: #131212;
-
-    transition: left 100ms linear;
-
-    &.expanded {
-    left: 0;
-    }
-}
-#sidebar-title {
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: #df98ea;
-    padding: 0 0.5rem 0.75rem;
 }
 #search-box { padding: 0 0.5rem 0.6rem; }
 #search-input {
@@ -136,6 +161,4 @@ nav#sidebar {
     color: #1a1a1a;
     outline: none;
 }
-#search-input:focus { border-color: #2563eb; box-shadow: 0 0 0 2px #dbeafe; }
-
 </style>

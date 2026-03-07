@@ -46,7 +46,7 @@ watch(
 </script>
 <template>
 	<div v-if="note" id="note-view">
-		<h1 class="note-title">{{ noteTitle }}</h1>
+		<h2 class="note-title">{{ noteTitle }}</h2>
 		<div v-if="note.meta.tags.length || note.meta.aliases.length" class="frontmatter">
 			<div v-if="note.meta.tags.length" class="fm-row">
 				<span class="fm-label">Tags</span>
@@ -70,9 +70,11 @@ div#note-view {
 	background: #131212d9;
 	height: fit-content;
 	max-height: 95vh;
+	max-width: 900px;
 	width: 95vw;
-	color: #e8eaed;
+	color: #edeff2;
 	overflow: auto;
+	margin: auto;
 	padding: 4px;
 }
 .placeholder {
@@ -84,7 +86,9 @@ div#note-view {
 	color: #dc2626;
 	font-size: 0.9rem;
 }
-
+.note-title {
+	text-align: center;
+}
 .frontmatter {
 	margin-bottom: 1.5rem;
 	display: flex;
@@ -133,7 +137,7 @@ div#note-view {
 }
 .md h1 { 
 	font-size: 1.75rem; 
-	border-bottom: 1px solid #e5e7eb; 
+	border-bottom: 1px solid #f1f3f5; 
 	padding-bottom: 0.35rem; 
 }
 .md h2 { 
@@ -150,6 +154,9 @@ div#note-view {
 }
 .md li { 
 	margin: 0.25rem 0; 
+}
+.md img { 
+	max-width: 100%; 
 }
 .md code {
 	background: #f3f4f6;
