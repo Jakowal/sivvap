@@ -76,9 +76,9 @@ defineExpose({ searchQuery, sidebarExpanded })
     </nav>
     <header>
         <button id="navbar-button-left" class="navbar-button" @click="sidebarExpanded = !sidebarExpanded"><Bars3Icon/></button>
-        <a href="/">
+        <RouterLink to="/">
             <h1 id="app-title">Tessam Wiki</h1>
-        </a>
+        </RouterLink>
         <button id="navbar-button-right" class="navbar-button" @click="sidebarExpanded = !sidebarExpanded"><Bars3Icon/></button>
     </header>
 </template>
