@@ -20,7 +20,7 @@ export function parseFrontmatter(raw: string): { meta: NoteMeta; body: string } 
   const titleRaw = titleMatch ? titleMatch[1].trim().replace(/^(['"])(.*)\1$/, '$2') : null
   return {
     meta: {
-      publish: /^publish:\s*true\s*$/m.test(block),
+      publish: /^publish:\s*(['"]?\s*true\s*['"]?)\s*$/m.test(block),
       tags: extractList(block, 'tags'),
       aliases: extractList(block, 'aliases'),
       title: titleRaw || null,

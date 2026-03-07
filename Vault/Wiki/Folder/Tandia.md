@@ -4,7 +4,7 @@ tags:
   - tessam
   - fantasy
   - country
-publish: true
+publish: "true"
 cssclasses:
   - country
   - clean-embeds

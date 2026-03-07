@@ -209,17 +209,20 @@ div#note-view {
 .md a:hover {
 	color: var(--color-primary-hover);
 }
-.md table { 
-	border-collapse: collapse; 
-	margin: 1rem 0; 
+.md table {
+	border-collapse: collapse;
+	margin: 1rem 0;
+	width: 100%;
 }
-.md th, .md td { 
-	border: 1px solid var(--border-default);
-	padding: 0.4rem 0.75rem; 
+.md th, .md td {
+	border: 1px solid var(--border-subtle);
+	padding: 0.4rem 0.75rem;
+	text-align: left;
 }
-.md th { 
-	background: var(--bg-surface-hover);
-	color: var(--text-table-header);
+.md th {
+	background: var(--bg-overlay);
+	color: var(--text-body);
+	font-weight: bold;
 }
 a.wiki-link {
 	color: var(--color-primary);
