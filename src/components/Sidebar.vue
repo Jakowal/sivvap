@@ -18,7 +18,7 @@ const rawFiles = import.meta.glob('/Vault/**/*.md', {
 }) as Record<string, string>
 
 const { tree, files } = processVaultFiles(rawFiles, vaultDates)
-const sidebarExpanded = ref(false)
+const sidebarExpanded = ref(window.innerWidth > 900)
 
 const recentFiles = Object.values(files)
     .filter((f): f is VaultFile & { lastUpdated: string } => f.lastUpdated !== null)
@@ -37,6 +37,8 @@ watch(searchQuery, (q) => {
     searchResults.value = searchFiles(files, q)
     }, 200)
 })
+
+defineExpose({ searchQuery, sidebarExpanded })
 </script>
 <template>
     <nav id="sidebar" :class="{expanded: sidebarExpanded}">
@@ -96,7 +98,8 @@ watch(searchQuery, (q) => {
         display: flex;
         flex-direction: column-reverse;
         justify-content: start;
-        left: 0;
+        left: -20%;
+
         top: 0;
         width: 20%;
         max-width: 300px;
@@ -105,7 +108,7 @@ watch(searchQuery, (q) => {
         transition: left 100ms linear;
 
         &.expanded {
-            left: -20%;
+            left: 0;
         }
     }
 }
@@ -131,11 +134,12 @@ watch(searchQuery, (q) => {
         flex-direction: column;
         justify-content: end;
         width: 100%;
+        height: 100dvh;
         padding-bottom: 2rem;
 
-        bottom: -100vh;
+        bottom: -100dvh;
         left: 0;
-        
+
         transition: bottom 200ms linear;
 
         &.expanded {

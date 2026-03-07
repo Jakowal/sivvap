@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { marked } from 'marked'
+import { marked, Renderer } from 'marked'
 import type { VaultFile, AliasMap } from '../types'
 import { preprocessWikiLinks } from '../utils/wikilinks'
 import { stripComments } from '../utils/comments'
+import { toUrlPath } from '../utils/urlpath'
 
 const props = defineProps<{
 	path: string
@@ -18,6 +19,7 @@ const note = ref<VaultFile | null>(null)
 const noteTitle = ref('')
 const html = ref('')
 const error = ref('')
+const hiddenTags = new Set(['pathfinder', 'tessam'])
 
 async function loadNote(path: string) {
 	error.value = ''
@@ -30,8 +32,25 @@ async function loadNote(path: string) {
 
 	note.value = data
 	const body = stripComments(data.body)
+
+	const renderer = new Renderer()
+	renderer.link = ({ href, text }) => {
+		// Skip external links and anchor-only links
+		if (!href || /^(https?:|mailto:|#)/.test(href)) {
+			return `<a href="${href}">${text}</a>`
+		}
+		const hashIdx = href.indexOf('#')
+		const base = hashIdx >= 0 ? href.slice(0, hashIdx) : href
+		const fragment = hashIdx >= 0 ? href.slice(hashIdx) : ''
+		const resolved = props.aliasMap[base] ?? props.aliasMap[base.toLowerCase()] ?? null
+		if (resolved === null) {
+			return `<span class="wiki-link broken" title="Note not found: ${base}">${text}</span>`
+		}
+		return `<a class="wiki-link" href="#/${toUrlPath(resolved)}${fragment}">${text}</a>`
+	}
+
 	// Rewrite [[wikilinks]] before passing to the markdown parser
-	html.value = await marked.parse(preprocessWikiLinks(body, props.aliasMap, props.files))
+	html.value = await marked.parse(preprocessWikiLinks(body, props.aliasMap, props.files), { renderer })
 	noteTitle.value = data.meta.title || filePath.split('/').pop()?.replace(/\.md$/, '') || 'Wiki'
 	document.title = noteTitle.value
 }
@@ -46,20 +65,19 @@ watch(
 </script>
 <template>
 	<div v-if="note" id="note-view">
-		<h2 class="note-title">{{ noteTitle }}</h2>
-		<div v-if="note.meta.tags.length || note.meta.aliases.length" class="frontmatter">
-			<div v-if="note.meta.tags.length" class="fm-row">
-				<span class="fm-label">Tags</span>
-				<button
-					v-for="tag in note.meta.tags"
-					:key="tag"
-					class="fm-tag"
-					@click="emit('tag-search', 'tag:' + tag)"
-				>{{ tag }}</button>
-			</div>
-			<div v-if="note.meta.aliases.length" class="fm-row">
-				<span class="fm-label">Aliases</span>
-				<span v-for="alias in note.meta.aliases" :key="alias" class="fm-alias">{{ alias }}</span>
+		<div class="note-header">
+			<h2 class="note-title">{{ noteTitle }}</h2>
+			<div v-if="note.meta.tags.some(t => !hiddenTags.has(t))" class="frontmatter">
+				<div class="fm-row">
+					<span class="fm-label">Tags</span>
+					<template v-for="tag in note.meta.tags" :key="tag">
+						<button
+							v-if="!hiddenTags.has(tag)"
+							class="fm-tag"
+							@click="emit('tag-search', 'tag:' + tag)"
+						>{{ tag }}</button>
+					</template>
+				</div>
 			</div>
 		</div>
 		<div class="md" v-html="html" />
@@ -96,11 +114,18 @@ div#note-view {
 	color: var(--color-error);
 	font-size: 0.9rem;
 }
+.note-header {
+	position: sticky;
+	top: -4px;
+	z-index: 1;
+	background: var(--bg-base);
+	border-bottom: 1px solid var(--border-subtle);
+	padding: 4px 4px 0.5rem 4px;
+}
 .note-title {
 	text-align: center;
 }
 .frontmatter {
-	margin-bottom: 1.5rem;
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
@@ -120,8 +145,8 @@ div#note-view {
 		flex-shrink: 0;
 	}
 	.fm-tag {
-		background: var(--bg-primary-light);
-		color: var(--color-primary-hover);
+		background: var(--bg-primary-subtle);
+		color: var(--bg-primary-light);
 		padding: 0.1rem 0.5rem;
 		border-radius: 999px;
 		font-size: 0.75rem;
@@ -129,15 +154,8 @@ div#note-view {
 		font-family: inherit;
 		cursor: pointer;
 	}
-	.fm-tag:hover { 
-		background: var(--bg-primary-light-hover);
-	}
-	.fm-alias {
-		background: var(--bg-accent);
-		color: var(--color-accent);
-		padding: 0.1rem 0.5rem;
-		border-radius: 999px;
-		font-size: 0.75rem;
+	.fm-tag:hover {
+		background: var(--bg-overlay);
 	}
 }
 .md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {

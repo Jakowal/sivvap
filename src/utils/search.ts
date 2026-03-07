@@ -53,8 +53,7 @@ export function searchFiles(
   const tagFilter = q.startsWith('tag:') ? q.slice(4).trim() : null
   const results: SearchResult[] = []
 
-  // Split into individual terms so each word is matched independently
-  const terms = q.split(/\s+/).filter(Boolean)
+  const terms = [q]
 
   for (const [relPath, file] of Object.entries(files)) {
     if (results.length >= 20) break
@@ -67,8 +66,8 @@ export function searchFiles(
     }
 
     const bodyLower = file.body.toLowerCase()
-    const titleMatch = terms.some((t) => title.toLowerCase().includes(t))
-    const bodyMatch = terms.some((t) => bodyLower.includes(t))
+    const titleMatch = title.toLowerCase().includes(q)
+    const bodyMatch = bodyLower.includes(q)
 
     if (titleMatch || bodyMatch) {
       results.push({ path: relPath, title, excerpt: buildExcerpt(file.body, terms) })

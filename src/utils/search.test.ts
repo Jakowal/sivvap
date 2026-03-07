@@ -27,18 +27,17 @@ describe('searchFiles', () => {
     expect(results[0].excerpt).toContain('<mark>hello</mark>')
   })
 
-  it('matches each word independently for a multi-word query', () => {
-    // 'cat' and 'mat' are not adjacent, so a phrase search would miss this
+  it('matches the full query string as a phrase', () => {
     const files = { 'note.md': makeFile('note.md', 'the cat sat on the mat') }
-    const results = searchFiles(files, 'cat mat')
-    expect(results).toHaveLength(1)
+    expect(searchFiles(files, 'cat sat')).toHaveLength(1)
+    // Non-adjacent words should not match
+    expect(searchFiles(files, 'cat mat')).toHaveLength(0)
   })
 
-  it('highlights all matched terms in the excerpt', () => {
+  it('highlights the matched phrase in the excerpt', () => {
     const files = { 'note.md': makeFile('note.md', 'the cat sat on the mat') }
-    const results = searchFiles(files, 'cat mat')
-    expect(results[0].excerpt).toContain('<mark>cat</mark>')
-    expect(results[0].excerpt).toContain('<mark>mat</mark>')
+    const results = searchFiles(files, 'cat sat')
+    expect(results[0].excerpt).toContain('<mark>cat sat</mark>')
   })
 
   it('excerpt shows context before and after the match', () => {
