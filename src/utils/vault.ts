@@ -33,7 +33,11 @@ export function processVaultFiles(
     const { meta, body } = parseFrontmatter(raw)
     if (!meta.publish) continue
     files[relPath] = { path: relPath, meta, body, lastUpdated: dates?.[absPath] ?? null }
-    urlMap[toUrlPath(relPath)] = relPath
+    const urlPath = toUrlPath(relPath)
+    urlMap[urlPath] = relPath
+    // Vue Router decodes URL params, so also register the decoded form
+    const decoded = decodeURIComponent(urlPath)
+    if (decoded !== urlPath) urlMap[decoded] = relPath
 
     // Register the filename stem and any declared aliases for wikilink resolution,
     // storing both original and lowercase forms for case-insensitive lookup

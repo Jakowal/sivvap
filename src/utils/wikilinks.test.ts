@@ -36,3 +36,56 @@ describe('preprocessWikiLinks', () => {
     expect(result).toContain('&lt;script&gt;')
   })
 })
+
+describe('embed transclusion (![[...]])', () => {
+  const files = {
+    'Note.md': { path: 'Note.md', meta: { publish: true, tags: [], aliases: [], title: null }, body: 'Note body content', lastUpdated: null },
+    'Headed.md': {
+      path: 'Headed.md',
+      meta: { publish: true, tags: [], aliases: [], title: null },
+      body: '# Intro\nIntro text\n## Details\nDetail text\n## Other\nOther text',
+      lastUpdated: null,
+    },
+  }
+  const aliasMap = { 'Note': 'Note.md', 'Headed': 'Headed.md' }
+
+  it('embeds full file content with ![[target]]', () => {
+    const result = preprocessWikiLinks('![[Note]]', aliasMap, files)
+    expect(result).toContain('<blockquote class="embed">')
+    expect(result).toContain('Note body content')
+    expect(result).toContain('<a class="embed-title" href="#/Note">')
+  })
+
+  it('embeds a specific heading section with ![[target#heading]]', () => {
+    const result = preprocessWikiLinks('![[Headed#Details]]', aliasMap, files)
+    expect(result).toContain('Detail text')
+    expect(result).not.toContain('Intro text')
+    expect(result).not.toContain('Other text')
+  })
+
+  it('uses display text for embed title with ![[target#heading|display]]', () => {
+    const result = preprocessWikiLinks('![[Headed#Details|My Title]]', aliasMap, files)
+    expect(result).toContain('My Title')
+  })
+
+  it('renders broken span for unresolved embed', () => {
+    const result = preprocessWikiLinks('![[missing]]', {}, files)
+    expect(result).toContain('<span class="wiki-link broken"')
+    expect(result).toContain('missing')
+  })
+
+  it('falls back to full content when heading is not found', () => {
+    const result = preprocessWikiLinks('![[Headed#Nonexistent]]', aliasMap, files)
+    expect(result).toContain('Intro text')
+    expect(result).toContain('Detail text')
+  })
+
+  it('limits recursion depth', () => {
+    const recursiveFiles = {
+      'A.md': { path: 'A.md', meta: { publish: true, tags: [], aliases: [], title: null }, body: '![[A]]', lastUpdated: null },
+    }
+    const result = preprocessWikiLinks('![[A]]', { 'A': 'A.md' }, recursiveFiles)
+    // Should not hang — the inner ![[A]] should stop being expanded at the depth limit
+    expect(result).toContain('<blockquote class="embed">')
+  })
+})

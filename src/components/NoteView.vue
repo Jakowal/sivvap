@@ -31,7 +31,7 @@ async function loadNote(path: string) {
 	note.value = data
 	const body = stripComments(data.body)
 	// Rewrite [[wikilinks]] before passing to the markdown parser
-	html.value = await marked.parse(preprocessWikiLinks(body, props.aliasMap))
+	html.value = await marked.parse(preprocessWikiLinks(body, props.aliasMap, props.files))
 	noteTitle.value = data.meta.title || filePath.split('/').pop()?.replace(/\.md$/, '') || 'Wiki'
 	document.title = noteTitle.value
 }
@@ -233,7 +233,26 @@ a.wiki-link:hover {
 }
 span.wiki-link.broken {
 	color: var(--color-error);
-	text-decoration: underline dotted; 
-	cursor: default; 
+	text-decoration: underline dotted;
+	cursor: default;
+}
+blockquote.embed {
+	border-left: 3px solid var(--color-primary);
+	background: var(--bg-overlay);
+	margin: 1rem 0;
+	padding: 0.6rem 1rem;
+	border-radius: 4px;
+}
+blockquote.embed .embed-title {
+	display: block;
+	color: var(--color-primary);
+	font-weight: bold;
+	text-decoration: none;
+	margin-bottom: 0.4rem;
+	font-size: 0.9em;
+}
+blockquote.embed .embed-title:hover {
+	color: var(--color-primary-hover);
+	text-decoration: underline;
 }
 </style>
