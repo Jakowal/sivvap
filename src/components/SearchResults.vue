@@ -15,20 +15,26 @@ const currentPath = computed(() =>
 
 <template>
   <p v-if="results.length === 0" class="no-results">No results</p>
-  <RouterLink
-    v-for="result in results"
-    :key="result.path"
-    class="search-result"
-    :class="{ active: currentPath === toUrlPath(result.path) }"
-    :to="'/' + toUrlPath(result.path)"
-    @click="emit('select')"
-  >
-    <span class="sr-title">{{ result.title }}</span>
-    <span v-if="result.excerpt" class="sr-excerpt" v-html="result.excerpt" />
-  </RouterLink>
+  <div id="results">
+    <RouterLink
+      v-for="result in results"
+      :key="result.path"
+      class="search-result"
+      :class="{ active: currentPath === toUrlPath(result.path) }"
+      :to="'/' + toUrlPath(result.path)"
+      @click="emit('select')"
+    >
+      <span class="sr-title">{{ result.title }}</span>
+      <span v-if="result.excerpt" class="sr-excerpt" v-html="result.excerpt" />
+    </RouterLink>
+  </div>
 </template>
 
 <style scoped lang="css">
+#results {
+  height:90vh;
+  overflow-y: auto;
+}
 .search-result {
   display: block;
   padding: 0.4rem 0.5rem;

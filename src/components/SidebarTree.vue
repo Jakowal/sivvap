@@ -16,7 +16,7 @@ const currentPath = computed(() =>
 <template>
   <div>
     <template v-for="node in nodes" :key="node.path">
-      <details v-if="node.type === 'dir'" class="tree-dir" open>
+      <details v-if="node.type === 'dir'" class="tree-dir">
         <summary>{{ node.name }}</summary>
         <div class="tree-children">
           <SidebarTree :nodes="node.children ?? []" @select="emit('select')" />
@@ -40,7 +40,7 @@ details.tree-dir > summary {
   cursor: pointer;
   list-style: none;
   padding: 0.2rem 0.5rem;
-  color: var(--text-subdued);
+  color: var(--text-muted);
   font-size: 0.85rem;
   user-select: none;
   border-radius: 4px;

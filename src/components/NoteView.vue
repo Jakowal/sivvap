@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { marked, Renderer } from 'marked'
 import type { VaultFile, AliasMap } from '../types'
 import { preprocessWikiLinks } from '../utils/wikilinks'
@@ -20,6 +20,32 @@ const noteTitle = ref('')
 const html = ref('')
 const error = ref('')
 const hiddenTags = new Set(['pathfinder', 'tessam'])
+const noteViewEl = ref<HTMLElement | null>(null)
+let pendingFragment = ''
+
+function slugify(text: string): string {
+	return text.toLowerCase().replace(/[^\w]+/g, '-').replace(/^-|-$/g, '')
+}
+
+function scrollToFragmentOrTop() {
+	if (!noteViewEl.value) return
+	if (pendingFragment) {
+		const el = noteViewEl.value.querySelector(`#${CSS.escape(pendingFragment)}`)
+		if (el) { el.scrollIntoView({ block: 'start' }); pendingFragment = ''; return }
+	}
+	pendingFragment = ''
+	noteViewEl.value.scrollTop = 0
+}
+
+function onNoteClick(e: MouseEvent) {
+	const anchor = (e.target as HTMLElement).closest?.('a[href^="#/"]')
+	if (!anchor) return
+	const href = anchor.getAttribute('href')!
+	const hashIdx = href.indexOf('#', 2)
+	if (hashIdx >= 0) {
+		pendingFragment = slugify(decodeURIComponent(href.slice(hashIdx + 1)))
+	}
+}
 
 async function loadNote(path: string) {
 	error.value = ''
@@ -34,6 +60,10 @@ async function loadNote(path: string) {
 	const body = stripComments(data.body)
 
 	const renderer = new Renderer()
+	renderer.heading = ({ text, depth }) => {
+		const id = slugify(text.replace(/<[^>]*>/g, ''))
+		return `<h${depth} id="${id}">${text}</h${depth}>\n`
+	}
 	renderer.link = ({ href, text }) => {
 		// Skip external links and anchor-only links
 		if (!href || /^(https?:|mailto:|#)/.test(href)) {
@@ -53,6 +83,8 @@ async function loadNote(path: string) {
 	html.value = await marked.parse(preprocessWikiLinks(body, props.aliasMap, props.files), { renderer })
 	noteTitle.value = data.meta.title || filePath.split('/').pop()?.replace(/\.md$/, '') || 'Wiki'
 	document.title = noteTitle.value
+	await nextTick()
+	scrollToFragmentOrTop()
 }
 
 watch(
@@ -64,7 +96,7 @@ watch(
 )
 </script>
 <template>
-	<div v-if="note" id="note-view">
+	<div v-if="note" id="note-view" ref="noteViewEl" @click="onNoteClick">
 		<div class="note-header">
 			<h2 class="note-title">{{ noteTitle }}</h2>
 			<div v-if="note.meta.tags.some(t => !hiddenTags.has(t))" class="frontmatter">

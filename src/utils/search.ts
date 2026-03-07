@@ -42,37 +42,41 @@ function buildExcerpt(body: string, terms: string[]): string {
   return (start > 0 ? '…' : '') + out + (end < body.length ? '…' : '')
 }
 
-export function searchFiles(
-  files: Record<string, VaultFile>,
-  query: string,
-): SearchResult[] {
+export function searchFiles(files: Record<string, VaultFile>, query: string): SearchResult[] {
   const q = query.toLowerCase().trim()
   if (!q) return []
 
   // Prefix "tag:" filters by tag instead of full-text
   const tagFilter = q.startsWith('tag:') ? q.slice(4).trim() : null
-  const results: SearchResult[] = []
+  const results: (SearchResult & { score: number })[] = []
 
   const terms = [q]
 
   for (const [relPath, file] of Object.entries(files)) {
-    if (results.length >= 20) break
+    if (results.length >= 200) break
     const title = file.meta.title ?? relPath.split('/').at(-1)!.replace(/\.md$/, '')
 
     if (tagFilter !== null) {
       if (file.meta.tags.some((t) => t.toLowerCase().includes(tagFilter)))
-        results.push({ path: relPath, title, excerpt: '' })
+        results.push({ path: relPath, title, excerpt: '', score: 0 })
       continue
     }
 
+    const titleLower = title.toLowerCase()
     const bodyLower = file.body.toLowerCase()
-    const titleMatch = title.toLowerCase().includes(q)
+    const titleMatch = titleLower.includes(q)
     const bodyMatch = bodyLower.includes(q)
 
     if (titleMatch || bodyMatch) {
-      results.push({ path: relPath, title, excerpt: buildExcerpt(file.body, terms) })
+      // Score: exact title > title starts with > title contains > body only
+      let score = 0
+      if (titleLower === q) score = 3
+      else if (titleLower.startsWith(q)) score = 2
+      else if (titleMatch) score = 1
+      results.push({ path: relPath, title, excerpt: buildExcerpt(file.body, terms), score })
     }
   }
 
+  results.sort((a, b) => b.score - a.score)
   return results
 }

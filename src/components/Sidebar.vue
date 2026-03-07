@@ -38,6 +38,10 @@ watch(searchQuery, (q) => {
     }, 200)
 })
 
+function closeSidebarOnMobile() {
+    if (window.innerWidth <= 900) sidebarExpanded.value = false
+}
+
 defineExpose({ searchQuery, sidebarExpanded })
 </script>
 <template>
@@ -47,16 +51,16 @@ defineExpose({ searchQuery, sidebarExpanded })
             :results="searchResults"
             @select="() => {
                 searchQuery = ''
-                sidebarExpanded = false
+                closeSidebarOnMobile()
             }"
         />
         <template v-else>
             <div id="content">
                 <div id="tree">
                     <div class="section-title">Files</div>
-                    <SidebarTree :nodes="tree" @select="sidebarExpanded = false"  />
+                    <SidebarTree :nodes="tree" @select="closeSidebarOnMobile"  />
                 </div>
-                <RecentFiles :files="recentFiles" @select="sidebarExpanded = false" />
+                <RecentFiles :files="recentFiles" @select="closeSidebarOnMobile" />
             </div>
         </template>
         <div id="search-box">
