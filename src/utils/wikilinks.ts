@@ -1,3 +1,4 @@
+import { marked } from 'marked'
 import type { AliasMap, VaultFile } from '../types'
 import { toUrlPath } from './urlpath'
 import { stripComments } from './comments'
@@ -98,6 +99,7 @@ export function preprocessWikiLinks(
 
     const title = display ?? heading ?? file.meta.title ?? baseTarget
     const href = `#/${toUrlPath(resolved)}`
-    return `<blockquote class="embed"><a class="embed-title" href="${href}">${escapeHtml(title)}</a>\n\n${content}\n</blockquote>`
+    const parsedContent = marked.parse(content) as string
+    return `\n\n<blockquote class="embed"><a class="embed-title" href="${href}">${escapeHtml(title)}</a>\n${parsedContent}</blockquote>\n\n`
   })
 }
