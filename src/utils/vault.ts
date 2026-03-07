@@ -15,10 +15,11 @@ export function processVaultFiles(
   const keys = Object.keys(rawFiles)
   if (keys.length === 0) return { tree: [], aliasMap: {}, files: {}, urlMap: {} }
 
-  // Keys are absolute paths like /Vault/<vault-name>/...; derive the shared prefix
-  // by taking the first 3 path components so all files under it are included
-  const firstParts = keys[0].split('/')
-  const vaultPrefix = firstParts.slice(0, 3).join('/') + '/'
+  // When VAULT_PATH is set, use it as the prefix; otherwise auto-detect
+  // from the first 3 path components (e.g. /Vault/<vault-name>/)
+  const vaultPrefix = typeof __VAULT_PATH__ === 'string' && __VAULT_PATH__
+    ? `/Vault/${__VAULT_PATH__}/`
+    : keys[0].split('/').slice(0, 3).join('/') + '/'
 
   const files: Record<string, VaultFile> = {}
   const aliasMap: AliasMap = {}

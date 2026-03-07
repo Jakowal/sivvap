@@ -3,6 +3,11 @@ import { globSync, statSync } from 'node:fs'
 import type { Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
+// Set VAULT_PATH to build from a specific subfolder, e.g.:
+//   VAULT_PATH=Worldbuilding/Tessam npm run build
+const vaultPath = process.env.VAULT_PATH || ''
+const vaultGlob = vaultPath ? `Vault/${vaultPath}/**/*.md` : 'Vault/**/*.md'
+
 function vaultDatesPlugin(): Plugin {
   return {
     name: 'vault-dates',
@@ -12,7 +17,7 @@ function vaultDatesPlugin(): Plugin {
     load(id) {
       if (id !== '\0virtual:vault-dates') return
       const root = process.cwd()
-      const files = globSync('Vault/**/*.md', { cwd: root })
+      const files = globSync(vaultGlob, { cwd: root })
       const dates: Record<string, string | null> = {}
       for (const file of files) {
         try {
@@ -29,6 +34,9 @@ function vaultDatesPlugin(): Plugin {
 
 export default defineConfig({
   plugins: [vue(), vaultDatesPlugin()],
+  define: {
+    __VAULT_PATH__: JSON.stringify(vaultPath),
+  },
   test: {
     environment: 'node',
   },

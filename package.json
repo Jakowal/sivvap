@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:tessam": "VAULT_PATH=Worldbuilding/Tessam vite",
     "build": "tsc && vite build",
+    "build:tessam": "VAULT_PATH=Worldbuilding/Tessam tsc && VAULT_PATH=Worldbuilding/Tessam vite build",
     "preview": "vite preview",
     "start": "vite preview --host",
     "test": "vitest run"
