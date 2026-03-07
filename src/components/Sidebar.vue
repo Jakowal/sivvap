@@ -49,8 +49,13 @@ watch(searchQuery, (q) => {
             }"
         />
         <template v-else>
-            <SidebarTree :nodes="tree" @select="sidebarExpanded = false"  />
-            <RecentFiles :files="recentFiles" @select="sidebarExpanded = false" />
+            <div id="content">
+                <div id="tree">
+                    <div class="section-title">Files</div>
+                    <SidebarTree :nodes="tree" @select="sidebarExpanded = false"  />
+                </div>
+                <RecentFiles :files="recentFiles" @select="sidebarExpanded = false" />
+            </div>
         </template>
         <div id="search-box">
             <input
@@ -71,25 +76,61 @@ watch(searchQuery, (q) => {
         <button id="navbar-button-right" class="navbar-button" @click="sidebarExpanded = !sidebarExpanded"><Bars3Icon/></button>
     </header>
 </template>
-<style lang="css" scoped>
-@media screen and (min-width: 600px) {
+<style lang="css">
+@media screen and (min-width: 900px) {
+    header {
+        justify-content: start;
+        padding-left: 2rem;
+
+        button#navbar-button-right {
+            display: none;
+        }
+
+        a {
+            h1#app-title {
+                font-size: 1.6rem;
+            }
+        }
+    }
     nav#sidebar {
-        left: -100%;
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: start;
+        left: 0;
         top: 0;
+        width: 20%;
+        max-width: 300px;
         padding: 40px 0.5rem 1rem 0.5rem;
 
         transition: left 100ms linear;
 
         &.expanded {
-            left: 0;
+            left: -20%;
         }
     }
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 900px) {
+    header {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        justify-content: center;
+
+        button#navbar-button-right {
+            right: 0;
+        }
+
+        a {
+            h1#app-title {
+                font-size: 1.4rem;
+            }
+        }
+    }
     nav#sidebar {
         display: flex;
         flex-direction: column;
         justify-content: end;
+        width: 100%;
         padding-bottom: 2rem;
 
         bottom: -100vh;
@@ -103,20 +144,26 @@ watch(searchQuery, (q) => {
     }
 }
 header {
-    position: absolute;
-    bottom: 0;
-    left: 0;
     height: 33px;
     width: 100vw;
     display: flex;
-    justify-content: center;
+    a {
+        z-index: 5;
+        text-decoration: none;
+
+        h1#app-title {
+            width: fit-content;
+            text-align: center;
+            color: var(--bg-surface);
+        }
+    }
 
     button.navbar-button {
         all: unset;
         z-index: 5;
         top: 0;
         cursor: pointer;
-        color: white;
+        color: var(--bg-surface);
         position: absolute;
         svg {
             height: 33px;
@@ -126,39 +173,47 @@ header {
     button#navbar-button-left {
         left: 0;
     }
-    button#navbar-button-right {
-        right: 0;
-    }
-    a {
-        z-index: 5;
-    text-decoration: none;
-
-        h1#app-title {
-            width: fit-content;
-            text-align: center;
-            color: white;
-        }
-    }
 }
 nav#sidebar {
     z-index: 4;
     position: absolute;
-    width: 100%;
     height: 100%;
-    opacity: 80%;
+    opacity: 90%;
     overflow-y: auto;
-    background: #131212;
+    background: var(--bg-base);
+    gap: 1rem;
+
+    #content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1rem;
+
+        #tree {
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+    }
+
+    .section-title {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--text-muted);
+        padding: 0 0.5rem 0.4rem;
+    }
 }
 #search-box { padding: 0 0.5rem 0.6rem; }
 #search-input {
     width: 100%;
     padding: 0.35rem 0.5rem;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border-default);
     border-radius: 4px;
     font-family: inherit;
     font-size: 0.85rem;
-    background: #fff;
-    color: #1a1a1a;
+    background: var(--bg-surface);
+    color: var(--text-dark);
     outline: none;
 }
 </style>

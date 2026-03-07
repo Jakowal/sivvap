@@ -65,25 +65,35 @@ watch(
 		<div class="md" v-html="html" />
 	</div>
 </template>
-<style lang="css">
+<style lang="css">  
+@media screen and (max-width: 900px) {
 div#note-view {
-	background: #131212d9;
+		max-height: calc(100vh - 36px);
+	}
+}
+@media screen and (min-width: 900px) {
+div#note-view {
+		max-height: 95vh;
+	}
+}
+div#note-view {
+	background: var(--bg-base-translucent);
 	height: fit-content;
-	max-height: 95vh;
 	max-width: 900px;
 	width: 95vw;
-	color: #edeff2;
+	color: var(--text-body);
+	font-size: 0.9rem;
 	overflow: auto;
 	margin: auto;
 	padding: 4px;
 }
 .placeholder {
-	color: #9ca3af;
+	color: var(--text-muted);
 	margin-top: 4rem;
 	font-size: 0.9rem;
 }
 .error { 
-	color: #dc2626;
+	color: var(--color-error);
 	font-size: 0.9rem;
 }
 .note-title {
@@ -105,13 +115,13 @@ div#note-view {
 		font-size: 0.7rem;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
-		color: #9ca3af;
+		color: var(--text-muted);
 		width: 3.5rem;
 		flex-shrink: 0;
 	}
 	.fm-tag {
-		background: #dbeafe;
-		color: #1d4ed8;
+		background: var(--bg-primary-light);
+		color: var(--color-primary-hover);
 		padding: 0.1rem 0.5rem;
 		border-radius: 999px;
 		font-size: 0.75rem;
@@ -120,11 +130,11 @@ div#note-view {
 		cursor: pointer;
 	}
 	.fm-tag:hover { 
-		background: #bfdbfe;
+		background: var(--bg-primary-light-hover);
 	}
 	.fm-alias {
-		background: #ede9fe;
-		color: #6d28d9;
+		background: var(--bg-accent);
+		color: var(--color-accent);
 		padding: 0.1rem 0.5rem;
 		border-radius: 999px;
 		font-size: 0.75rem;
@@ -132,12 +142,13 @@ div#note-view {
 }
 .md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
 	margin: 1.5rem 0 0.5rem;
-	color: #efedef;
+	font-size: 1rem;
+	color: var(--text-strong);
 	font-family: inherit;
 }
 .md h1 { 
 	font-size: 1.75rem; 
-	border-bottom: 1px solid #f1f3f5; 
+	border-bottom: 1px solid var(--border-heading);
 	padding-bottom: 0.35rem; 
 }
 .md h2 { 
@@ -159,14 +170,14 @@ div#note-view {
 	max-width: 100%; 
 }
 .md code {
-	background: #f3f4f6;
+	background: var(--bg-surface-hover);
 	padding: 0.1em 0.35em;
 	border-radius: 3px;
 	font-size: 0.88em;
-	color: #b45309;
+	color: var(--text-code-inline);
 }
 .md pre { 
-	background: #f3f4f6; 
+	background: var(--bg-surface-hover); 
 	padding: 1rem; 
 	border-radius: 6px; 
 	overflow-x: auto; 
@@ -175,50 +186,50 @@ div#note-view {
 .md pre code { 
 	background: none; 
 	padding: 0; 
-	color: #dbdbdb; 
+	color: var(--text-code-block);
 	font-size: 0.9em; 
 }
 .md blockquote {
-	border-left: 3px solid #d1d5db;
+	border-left: 3px solid var(--border-subtle);
 	margin: 1rem 0;
 	padding: 0.4rem 1rem;
-	color: #acb1bb;
+	color: var(--text-blockquote);
 }
 .md hr  { 
 	border: none; 
-	border-top: 1px solid #e5e7eb; 
+	border-top: 1px solid var(--border-default);
 	margin: 1.5rem 0; 
 }
 .md strong { 
-	color: #e5e7ea; 
+	color: var(--text-strong);
 }
-.md a { 
-	color: #2563eb; 
+.md a {
+	color: var(--color-primary);
 }
-.md a:hover { 
-	color: #1d4ed8; 
+.md a:hover {
+	color: var(--color-primary-hover);
 }
 .md table { 
 	border-collapse: collapse; 
 	margin: 1rem 0; 
 }
 .md th, .md td { 
-	border: 1px solid #e5e7eb; 
+	border: 1px solid var(--border-default);
 	padding: 0.4rem 0.75rem; 
 }
 .md th { 
-	background: #f9fafb; 
-	color: #374151; 
+	background: var(--bg-surface-hover);
+	color: var(--text-table-header);
 }
-a.wiki-link { 
-	color: #2563eb; 
-	text-decoration: underline dotted; 
+a.wiki-link {
+	color: var(--color-primary);
+	text-decoration: underline dotted;
 }
-a.wiki-link:hover { 
-	color: #1d4ed8; 
+a.wiki-link:hover {
+	color: var(--color-primary-hover);
 }
-span.wiki-link.broken { 
-	color: #dc2626; 
+span.wiki-link.broken {
+	color: var(--color-error);
 	text-decoration: underline dotted; 
 	cursor: default; 
 }

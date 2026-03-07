@@ -6,8 +6,28 @@
     <title>Wiki</title>
     <style>
       @font-face {
-        font-family: 'DyslexicPixel';
-        src: url('./DyslexicPixel.ttf') format('truetype');
+        font-family: 'OpenDyslexic';
+        src: url('./OpenDyslexic-Regular.otf') format('opentype');
+        font-weight: normal;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'OpenDyslexic';
+        src: url('./OpenDyslexic-Bold.otf') format('opentype');
+        font-weight: bold;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'OpenDyslexic';
+        src: url('./OpenDyslexic-Italic.otf') format('opentype');
+        font-weight: normal;
+        font-style: italic;
+      }
+      @font-face {
+        font-family: 'OpenDyslexic';
+        src: url('./OpenDyslexic-BoldItalic.otf') format('opentype');
+        font-weight: bold;
+        font-style: italic;
       }
 
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -16,14 +36,14 @@
         height: 100vh;
         width: 100vw;
         overflow: hidden;
-        font-family: 'DyslexicPixel';
-        background: #fff;
-        color: #1a1a1a;
+        font-family: 'OpenDyslexic';
+        letter-spacing: -0.14em;
+        background: var(--bg-surface);
+        color: var(--text-dark);
         background-image: url('./background.png');
         background-repeat: repeat-x;
-        background-color: #131212;
+        background-color: var(--bg-base);
         background-size: max(50%, 800px);
-        padding: 0.5rem;
       }
 
     </style>

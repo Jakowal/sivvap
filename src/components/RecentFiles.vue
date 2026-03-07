@@ -22,8 +22,8 @@ function noteName(path: string): string {
 </script>
 
 <template>
-  <div v-if="files.length" class="recent-files">
-    <div class="recent-title">Recent</div>
+  <div v-if="files.length" id="container">
+    <div class="section-title">Recently Updated</div>
     <RouterLink
       v-for="file in files"
       :key="file.path"
@@ -39,17 +39,9 @@ function noteName(path: string): string {
 </template>
 
 <style scoped lang="css">
-.recent-files {
-  margin-top: 1rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid #e5e7eb;
-}
-.recent-title {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: #9ca3af;
-  padding: 0 0.5rem 0.4rem;
+#container {
+  overflow-y: auto;
+  height: 30vh;
 }
 .recent-item {
   display: flex;
@@ -60,20 +52,20 @@ function noteName(path: string): string {
   text-decoration: none;
   gap: 0.5rem;
 }
-.recent-item:hover { background: #eff6ff; }
-.recent-item.active { background: #dbeafe; }
+.recent-item:hover { 
+  background: var(--bg-primary-subtle); 
+}
 .recent-name {
-  color: #2563eb;
+  color: var(--color-primary);
   font-size: 0.85rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
 }
-.recent-item.active .recent-name { color: #1d4ed8; font-weight: bold; }
 .recent-date {
-  color: #9ca3af;
-  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
   white-space: nowrap;
   flex-shrink: 0;
 }

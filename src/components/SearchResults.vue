@@ -37,15 +37,15 @@ const currentPath = computed(() =>
   color: inherit;
   margin-bottom: 0.1rem;
 }
-.search-result:hover { 
-  background: #404444; 
+.search-result:hover {
+  background: var(--bg-overlay);
 }
-.search-result.active { 
-  background: #404444; 
+.search-result.active {
+  background: var(--bg-overlay);
 }
 .sr-title { 
   display: block; 
-  color: #aec4f4; 
+  color: var(--text-search-title);
   font-size: 0.85rem; 
   font-weight: bold; 
 }
@@ -55,19 +55,19 @@ const currentPath = computed(() =>
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  color: #e4e9f4;
+  color: var(--text-strong);
   font-size: 0.75rem;
   margin-top: 0.15rem;
   line-height: 1.4;
 }
 .no-results { 
-  color: #9ca3af; 
+  color: var(--text-muted);
   font-size: 0.8rem; 
   padding: 0.25rem 0.5rem; 
 }
 .sr-excerpt :deep(mark) {
-  background: #fef08a;
-  color: #713f12;
+  background: var(--bg-highlight);
+  color: var(--text-highlight);
   border-radius: 2px;
   padding: 0 1px;
   font-style: normal;
