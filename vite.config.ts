@@ -37,6 +37,9 @@ export default defineConfig({
   define: {
     __VAULT_PATH__: JSON.stringify(vaultPath),
   },
+  preview: {
+    allowedHosts: ['tessam.jawa.no'],
+  },
   test: {
     environment: 'node',
   },
