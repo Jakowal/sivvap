@@ -230,7 +230,7 @@ nav#sidebar {
     border: 1px solid var(--border-default);
     border-radius: 4px;
     font-family: inherit;
-    font-size: 0.85rem;
+    font-size: 1rem;
     background: var(--bg-surface);
     color: var(--text-dark);
     outline: none;
