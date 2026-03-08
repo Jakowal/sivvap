@@ -74,7 +74,7 @@ async function loadNote(path: string) {
 		const fragment = hashIdx >= 0 ? href.slice(hashIdx) : ''
 		const resolved = props.aliasMap[base] ?? props.aliasMap[base.toLowerCase()] ?? null
 		if (resolved === null) {
-			return `<span class="wiki-link broken" title="Note not found: ${base}">${text}</span>`
+			return `<span class="wiki-link broken">${text}</span>`
 		}
 		return `<a class="wiki-link" href="#/${toUrlPath(resolved)}${fragment}">${text}</a>`
 	}

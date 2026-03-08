@@ -60,7 +60,7 @@ export function preprocessWikiLinks(
       const displayText = (display ?? t).trim()
       const resolved = aliasMap[t] ?? aliasMap[t.toLowerCase()] ?? null
       if (resolved === null) {
-        return `<span class="wiki-link broken" title="Note not found: ${escapeHtml(t)}">${escapeHtml(displayText)}</span>`
+        return `<span class="wiki-link broken">${escapeHtml(displayText)}</span>`
       }
       return `<a class="wiki-link" href="#/${toUrlPath(resolved)}">${escapeHtml(displayText)}</a>`
     }
@@ -73,13 +73,13 @@ export function preprocessWikiLinks(
     const resolved = aliasMap[baseTarget] ?? aliasMap[baseTarget.toLowerCase()] ?? null
     if (resolved === null) {
       const displayText = (display ?? t).trim()
-      return `<span class="wiki-link broken" title="Note not found: ${escapeHtml(baseTarget)}">${escapeHtml(displayText)}</span>`
+      return `<span class="wiki-link broken">${escapeHtml(displayText)}</span>`
     }
 
     const file = files[resolved]
     if (!file) {
       const displayText = (display ?? t).trim()
-      return `<span class="wiki-link broken" title="Note not found: ${escapeHtml(baseTarget)}">${escapeHtml(displayText)}</span>`
+      return `<span class="wiki-link broken">${escapeHtml(displayText)}</span>`
     }
 
     let content = stripComments(file.body)
