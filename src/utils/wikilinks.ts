@@ -8,6 +8,10 @@ const WIKILINK_RE = /(!?)\[\[([^\]|]+?)(?:\|([^\]]+?))?\]\]/g
 
 const MAX_EMBED_DEPTH = 3
 
+function slugify(text: string): string {
+  return text.toLowerCase().replace(/[^\w]+/g, '-').replace(/^-|-$/g, '')
+}
+
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, '&amp;')
@@ -57,12 +61,15 @@ export function preprocessWikiLinks(
     const t = target.trim()
 
     if (!isEmbed) {
-      const displayText = (display ?? t).trim()
-      const resolved = aliasMap[t] ?? aliasMap[t.toLowerCase()] ?? null
+      const hashIdx = t.indexOf('#')
+      const baseTarget = hashIdx >= 0 ? t.slice(0, hashIdx) : t
+      const fragment = hashIdx >= 0 ? '#' + slugify(t.slice(hashIdx + 1)) : ''
+      const displayText = (display ?? (hashIdx >= 0 ? t.slice(hashIdx + 1) : t)).trim()
+      const resolved = aliasMap[baseTarget] ?? aliasMap[baseTarget.toLowerCase()] ?? null
       if (resolved === null) {
         return `<span class="wiki-link broken">${escapeHtml(displayText)}</span>`
       }
-      return `<a class="wiki-link" href="#/${toUrlPath(resolved)}">${escapeHtml(displayText)}</a>`
+      return `<a class="wiki-link" href="#/${toUrlPath(resolved)}${fragment}">${escapeHtml(displayText)}</a>`
     }
 
     // Embed: ![[target]] or ![[target#heading]] or ![[target#heading|display]]
