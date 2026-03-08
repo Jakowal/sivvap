@@ -25,10 +25,10 @@ function onTagSearch(query: string) {
 <template>
 	<Sidebar ref="sidebarRef"/>
 	<main>
-    <div>
-		<RouterView v-slot="{ Component }">
-			<component :is="Component" :alias-map="aliasMap" :files="files" :url-map="urlMap" @tag-search="onTagSearch" />
-		</RouterView>
-    </div>
+		<div>
+			<RouterView v-slot="{ Component }">
+				<component :is="Component" :alias-map="aliasMap" :files="files" :url-map="urlMap" @tag-search="onTagSearch" />
+			</RouterView>
+		</div>
 	</main>
 </template>

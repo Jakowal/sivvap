@@ -42,6 +42,12 @@ function closeSidebarOnMobile() {
     if (window.innerWidth <= 900) sidebarExpanded.value = false
 }
 
+watch(sidebarExpanded, (open) => {
+    if (window.innerWidth <= 900) {
+        document.body.style.overflow = open ? 'hidden' : ''
+    }
+})
+
 defineExpose({ searchQuery, sidebarExpanded })
 </script>
 <template>
@@ -85,6 +91,9 @@ defineExpose({ searchQuery, sidebarExpanded })
 <style lang="css">
 @media screen and (min-width: 900px) {
     header {
+
+        top: 0;
+        left: 0;
         justify-content: start;
         padding-left: 2rem;
 
@@ -118,10 +127,10 @@ defineExpose({ searchQuery, sidebarExpanded })
 }
 @media screen and (max-width: 900px) {
     header {
-        position: absolute;
-        left: 0;
+        top: unset;
         bottom: 0;
         justify-content: center;
+        background: var(--bg-base);
 
         button#navbar-button-right {
             right: 0;
@@ -152,8 +161,10 @@ defineExpose({ searchQuery, sidebarExpanded })
     }
 }
 header {
+    position: fixed;
     height: 33px;
     width: 100vw;
+    z-index: 5;
     display: flex;
     a {
         z-index: 5;
@@ -184,7 +195,7 @@ header {
 }
 nav#sidebar {
     z-index: 4;
-    position: absolute;
+    position: fixed;
     height: 100%;
     opacity: 90%;
     overflow-y: auto;

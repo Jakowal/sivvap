@@ -33,9 +33,8 @@
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
       body {
-        height: 100vh;
         width: 100vw;
-        overflow: hidden;
+        min-height: 100vh;
         font-family: 'OpenDyslexic';
         letter-spacing: -0.14em;
         background: #131213;
@@ -44,6 +43,7 @@
         background-repeat: repeat-x;
         background-color: var(--bg-base, #131213);
         background-size: max(50%, 800px);
+        background-attachment: fixed;
       }
 
     </style>

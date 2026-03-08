@@ -34,7 +34,7 @@ function scrollToFragmentOrTop() {
 		if (el) { el.scrollIntoView({ block: 'start' }); pendingFragment = ''; return }
 	}
 	pendingFragment = ''
-	noteViewEl.value.scrollTop = 0
+	window.scrollTo(0, 0)
 }
 
 function onNoteClick(e: MouseEvent) {
@@ -116,26 +116,20 @@ watch(
 	</div>
 </template>
 <style lang="css">  
-@media screen and (max-width: 900px) {
-div#note-view {
-		max-height: calc(100vh - 36px);
-	}
-}
-@media screen and (min-width: 900px) {
-div#note-view {
-		max-height: 95vh;
-	}
-}
 div#note-view {
 	background: var(--bg-base-translucent);
-	height: fit-content;
 	max-width: 900px;
 	width: 95vw;
 	color: var(--text-body);
 	font-size: 0.9rem;
-	overflow: auto;
 	margin: auto;
 	padding: 4px;
+	padding-bottom: 4rem;
+}
+@media screen and (max-width: 900px) {
+	div#note-view {
+		margin-bottom: 34px;
+	}
 }
 .placeholder {
 	color: var(--text-muted);
