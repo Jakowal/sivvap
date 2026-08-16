@@ -31,14 +31,27 @@
         font-weight: bold;
         font-style: italic;
       }
+      @font-face {
+        font-family: 'W95font';
+        src: url('w95font.woff2') format('woff2'),
+            url('w95font.woff2') format('woff');
+        font-weight: normal;
+      }
+
+      @font-face {
+          font-family: 'W95font';
+          src: url('w95font-bold.woff2') format('woff2'),
+              url('w95font-bold.woff2') format('woff');
+          font-weight: bold;
+
+      }
 
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
       body {
         width: 100vw;
         min-height: 100vh;
-        font-family: 'OpenDyslexic';
-        letter-spacing: -0.14em;
+        font-family: 'W95font';
         background: #131213;
         color: var(--text-dark);
         background-image: url('./background.png');
