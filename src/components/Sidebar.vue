@@ -130,7 +130,7 @@ defineExpose({ searchQuery, sidebarExpanded })
         top: unset;
         bottom: 0;
         justify-content: center;
-        background: var(--bg-base);
+        background: var(--bg-text);
 
         button#navbar-button-right {
             right: 0;
@@ -173,7 +173,7 @@ header {
         h1#app-title {
             width: fit-content;
             text-align: center;
-            color: var(--bg-surface);
+            color: var(--text-color);
         }
     }
 
@@ -182,7 +182,7 @@ header {
         z-index: 5;
         top: 0;
         cursor: pointer;
-        color: var(--bg-surface);
+        color: var(--text-color);
         position: absolute;
         svg {
             height: 33px;
@@ -197,9 +197,10 @@ nav#sidebar {
     z-index: 4;
     position: fixed;
     height: 100%;
-    opacity: 90%;
     overflow-y: auto;
-    background: var(--bg-base);
+    background: var(--bg-text);
+	outline: solid 2px var(--border-light);
+	border-right: solid 2px var(--border-dark); 
     gap: 1rem;
 
     #content {
@@ -219,7 +220,7 @@ nav#sidebar {
         font-size: 0.7rem;
         text-transform: uppercase;
         letter-spacing: 0.12em;
-        color: var(--text-muted);
+        color: var(--text-weak);
         padding: 0 0.5rem 0.4rem;
     }
 }
@@ -227,12 +228,13 @@ nav#sidebar {
 #search-input {
     width: 100%;
     padding: 0.35rem 0.5rem;
-    border: 1px solid var(--border-default);
-    border-radius: 4px;
+	border-radius: var(--item-border-radius);
+	outline: solid 2px var(--border-light);
+	border: solid 2px var(--border-dark);
     font-family: inherit;
     font-size: 1rem;
-    background: var(--bg-surface);
-    color: var(--text-dark);
+    background: var(--bg-text);
+    color: var(--text-color);
     outline: none;
 }
 </style>

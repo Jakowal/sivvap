@@ -98,7 +98,10 @@ watch(
 <template>
 	<div v-if="note" id="note-view" ref="noteViewEl" @click="onNoteClick">
 		<div class="note-header">
-			<h2 class="note-title">{{ noteTitle }}</h2>
+			<div class="note-title">
+				<h2 class="note-title">{{ noteTitle }}</h2>
+				<button @click=onNoteClick class="icon"><div>✖</div></button>
+			</div>
 			<div v-if="note.meta.tags.some(t => !hiddenTags.has(t))" class="frontmatter">
 				<div class="fm-row">
 					<span class="fm-label">Tags</span>
@@ -117,14 +120,16 @@ watch(
 </template>
 <style lang="css">  
 div#note-view {
-	background: var(--bg-base-translucent);
+	background: var(--bg-text);
 	max-width: 900px;
 	width: 95vw;
-	color: var(--text-body);
+	color: var(--text-color);
 	font-size: 0.9rem;
 	margin: auto;
-	padding: 4px;
-	padding-bottom: 4rem;
+	padding: 16px;
+	border-radius: var(--item-border-radius);
+	outline: solid 2px var(--border-light);
+	border: solid 2px var(--border-dark); 
 }
 @media screen and (max-width: 900px) {
 	div#note-view {
@@ -141,12 +146,33 @@ div#note-view {
 	font-size: 0.9rem;
 }
 .note-header {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
 	position: sticky;
-	top: -4px;
+	top: 0;
 	z-index: 1;
-	background: var(--bg-base);
-	border-bottom: 1px solid var(--border-subtle);
+	background: var(--bg-text);
+	border-radius: var(--item-border-radius);
+	outline: solid 2px var(--border-light);
+	border: solid 2px var(--border-dark); 
 	padding: 4px 4px 0.5rem 4px;
+}
+.note-title {
+	display: flex;
+	justify-content: space-between;
+}
+.icon {
+	all: unset;
+	background: var(--bg-text);
+	color: var(--text-color);
+	cursor: pointer;
+	width: 1rem;
+	height: 1rem;
+	text-align: center;
+	border-radius: var(--item-border-radius);
+	outline: solid 2px var(--border-light);
+	border: solid 2px var(--border-dark); 
 }
 .note-title {
 	text-align: center;
@@ -166,13 +192,13 @@ div#note-view {
 		font-size: 0.7rem;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
-		color: var(--text-muted);
+		color: var(--text-weak);
 		width: 3.5rem;
 		flex-shrink: 0;
 	}
 	.fm-tag {
-		background: var(--bg-primary-subtle);
-		color: var(--bg-primary-light);
+		background: var(--border-light);
+		color: var(--text-color);
 		padding: 0.1rem 0.5rem;
 		border-radius: 999px;
 		font-size: 0.75rem;
@@ -181,18 +207,18 @@ div#note-view {
 		cursor: pointer;
 	}
 	.fm-tag:hover {
-		background: var(--bg-overlay);
+		background: var(--border-dark);
 	}
 }
 .md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
 	margin: 1.5rem 0 0.5rem;
 	font-size: 1rem;
-	color: var(--text-strong);
+	color: var(--text-color);
 	font-family: inherit;
 }
 .md h1 { 
 	font-size: 1.75rem; 
-	border-bottom: 1px solid var(--border-heading);
+	border-bottom: 1px solid var(--border-dark);
 	padding-bottom: 0.35rem; 
 }
 .md h2 { 
@@ -211,17 +237,18 @@ div#note-view {
 	margin: 0.25rem 0; 
 }
 .md img { 
+	border-radius: var(--element-border-radius);
 	max-width: 100%; 
 }
 .md code {
-	background: var(--bg-surface-hover);
+	background: var(--border-light);
 	padding: 0.1em 0.35em;
 	border-radius: 3px;
 	font-size: 0.88em;
 	color: var(--text-code-inline);
 }
 .md pre { 
-	background: var(--bg-surface-hover); 
+	background: var(--border-light); 
 	padding: 1rem; 
 	border-radius: 6px; 
 	overflow-x: auto; 
@@ -230,28 +257,28 @@ div#note-view {
 .md pre code { 
 	background: none; 
 	padding: 0; 
-	color: var(--text-code-block);
+	color: var(--text-weak);
 	font-size: 0.9em; 
 }
 .md blockquote {
-	border-left: 3px solid var(--border-subtle);
+	border-left: 3px solid var(--border-light);
 	margin: 1rem 0;
 	padding: 0.4rem 1rem;
-	color: var(--text-blockquote);
+	color: var(--text-weak);
 }
 .md hr  { 
 	border: none; 
-	border-top: 1px solid var(--border-default);
+	border-top: 1px solid var(--border-dark);
 	margin: 1.5rem 0; 
 }
 .md strong { 
-	color: var(--text-strong);
+	color: var(--text-color);
 }
 .md a {
-	color: var(--color-primary);
+	color: var(--text-weak);
 }
 .md a:hover {
-	color: var(--color-primary-hover);
+	color: var(--text-color);
 }
 .md table {
 	border-collapse: collapse;
@@ -259,21 +286,21 @@ div#note-view {
 	width: 100%;
 }
 .md th, .md td {
-	border: 1px solid var(--border-subtle);
+	border: 1px solid var(--border-light);
 	padding: 0.4rem 0.75rem;
 	text-align: left;
 }
 .md th {
-	background: var(--bg-overlay);
+	background: var(--border-light);
 	color: var(--text-body);
 	font-weight: bold;
 }
 a.wiki-link {
-	color: var(--color-primary);
+	color: var(--text-weak);
 	text-decoration: underline dotted;
 }
 a.wiki-link:hover {
-	color: var(--color-primary-hover);
+	color: var(--text-color);
 }
 span.wiki-link.broken {
 	color: var(--color-error);
@@ -281,22 +308,22 @@ span.wiki-link.broken {
 	cursor: default;
 }
 blockquote.embed {
-	border-left: 3px solid var(--color-primary);
-	background: var(--bg-overlay);
+	border-left: 3px solid var(--text-weak);
+	background: var(--border-light);
 	margin: 1rem 0;
 	padding: 0.6rem 1rem;
 	border-radius: 4px;
 }
 blockquote.embed .embed-title {
 	display: block;
-	color: var(--color-primary);
+	color: var(--text-weak);
 	font-weight: bold;
 	text-decoration: none;
 	margin-bottom: 0.4rem;
 	font-size: 0.9em;
 }
 blockquote.embed .embed-title:hover {
-	color: var(--color-primary-hover);
+	color: var(--text-color);
 	text-decoration: underline;
 }
 </style>

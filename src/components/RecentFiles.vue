@@ -53,10 +53,10 @@ function noteName(path: string): string {
   gap: 0.5rem;
 }
 .recent-item:hover { 
-  background: var(--bg-primary-subtle); 
+  background: var(--border-light); 
 }
 .recent-name {
-  color: var(--color-primary);
+  color: var(--text-color);
   font-size: 0.85rem;
   white-space: nowrap;
   overflow: hidden;
@@ -64,7 +64,7 @@ function noteName(path: string): string {
   min-width: 0;
 }
 .recent-date {
-  color: var(--text-muted);
+  color: var(--text-weak);
   font-size: 0.8rem;
   white-space: nowrap;
   flex-shrink: 0;

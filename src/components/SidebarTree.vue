@@ -40,7 +40,7 @@ details.tree-dir > summary {
   cursor: pointer;
   list-style: none;
   padding: 0.2rem 0.5rem;
-  color: var(--text-muted);
+  color: var(--text-weak);
   font-size: 0.85rem;
   user-select: none;
   border-radius: 4px;
@@ -56,8 +56,8 @@ details.tree-dir[open] > summary::before {
   content: '▼ '; 
 }
 details.tree-dir > summary:hover { 
-  background: var(--bg-surface-hover); 
-  color: var(--text-dark); 
+  background: var(--border-light); 
+  color: var(--text-color); 
 }
 .tree-children { 
   padding-left: 1rem; 
@@ -66,7 +66,7 @@ a.tree-file {
   display: block;
   padding: 0.2rem 0.5rem;
   font-size: 0.85rem;
-  color: var(--color-primary);
+  color: var(--text-color);
   border-radius: 4px;
   text-decoration: none;
   white-space: nowrap;
@@ -74,11 +74,11 @@ a.tree-file {
   text-overflow: ellipsis;
 }
 a.tree-file:hover { 
-  background: var(--bg-primary-subtle); 
+  background: var(--text-color); 
 }
 a.tree-file.active { 
-  background: var(--bg-primary-subtle); 
-color: var(--color-primary-hover); 
-font-weight: bold; 
+  background: var(--border-light); 
+  color: var(--text-color); 
+  font-weight: bold; 
 }
 </style>
