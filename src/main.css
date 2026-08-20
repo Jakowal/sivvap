@@ -1,9 +1,9 @@
 :root {
   --item-border-radius: 0.25rem;
   --element-border-radius: 1.25rem;
-  --bg-text: #e2c8a3;
-  --text-color: #2e2010;
-  --text-weak: #735936;
-  --border-dark: #735936;
-  --border-light: #c3a983;
+  --bg-text: #070b2e;
+  --text-color: #f6d2b4;
+  --text-weak: #fb8585;
+  --border-dark: #4a3b80;
+  --border-light: #ca67ac;
 }
